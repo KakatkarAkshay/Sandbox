@@ -15,7 +15,7 @@ jobs:
       - name: Checkout Saltbox repository
         uses: actions/checkout@v6
         with:
-          repository: saltyorg/Saltbox
+          repository: KakatkarAkshay/Saltbox
           path: saltbox
 
       - name: Create Directories
@@ -103,7 +103,7 @@ jobs:
       - name: Install sb binary
         uses: jaxxstorm/action-install-gh-release@v2.1.0
         with:
-          repo: saltyorg/sb-go
+          repo: KakatkarAkshay/sb-go
           tag: latest
           extension-matching: disable
           platform: linux
@@ -113,7 +113,7 @@ jobs:
 
       - name: Check sb version
         run: |
-          SB_BINARY="$(find /opt/hostedtoolcache/saltyorg/sb-go/latest -type f -name sb | head -n 1)"
+          SB_BINARY="$(find /opt/hostedtoolcache -path '*/sb-go/latest/*/sb' -type f | head -n 1)"
           if [ -z "$SB_BINARY" ]; then
             echo "Unable to locate installed sb binary" >&2
             exit 1
