@@ -37,9 +37,13 @@
     url: "{{ svm }}https://api.github.com/repos/autobrr/tqm/releases/latest"
   register: tqm_releases
 
-- name: Get the url for latest amd64 tqm binary archive
+- name: Set tqm architecture suffix
   ansible.builtin.set_fact:
-    tqm_latest: "{{ tqm_releases.json.assets | selectattr('name', 'search', '_linux_amd64.tar.gz') | map(attribute='browser_download_url') | join('') }}"
+    tqm_asset_arch: "{{ 'arm64' if ansible_facts['architecture'] in ['aarch64', 'arm64'] else 'amd64' }}"
+
+- name: Get the url for latest tqm binary archive
+  ansible.builtin.set_fact:
+    tqm_latest: "{{ tqm_releases.json.assets | selectattr('name', 'search', '_linux_' + tqm_asset_arch + '.tar.gz') | map(attribute='browser_download_url') | join('') }}"
 
 - name: Ensure that temp directory does not exist
   ansible.builtin.file:
